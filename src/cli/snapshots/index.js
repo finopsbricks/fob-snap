@@ -52,7 +52,7 @@ async function listHandler(argv) {
 }
 
 export function buildSnapshotsCommand() {
-  const snapshots = new Command('snapshots').alias('snap').description('Push and list snapshot versions');
+  const snapshots = new Command('snapshots').description('Push and list snapshot versions');
 
   snapshots
     .command('push')

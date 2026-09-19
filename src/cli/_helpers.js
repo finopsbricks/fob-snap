@@ -60,3 +60,32 @@ export function listOptions(cmd) {
     .option('--page <n>', 'Page number', Number, 1)
     .option('--limit <n>', 'Page size (max 500)', Number, 100);
 }
+
+/**
+ * Help formatting for the whole tree, per the CLI standard's command-grammar note
+ * (Options: above Global Options:, hang-indented descriptions).
+ *
+ * `subcommandTerm` drops commander's default `[options]` suffix so the name column
+ * stays narrow enough for descriptions to wrap cleanly; aliases are preserved
+ * (`remove|rm`), since help is the only place a reader discovers them.
+ *
+ * `showGlobalOptions` renders the mandated `Options:` / `Global Options:` split.
+ *
+ * Commander does not inherit `configureHelp()` through `addCommand()`, so this
+ * walks the tree rather than being set once at the root.
+ */
+export function configureTreeHelp(cmd) {
+  cmd.configureHelp({
+    helpWidth: process.stdout.columns || 92,
+    showGlobalOptions: true,
+    subcommandTerm: (c) => {
+      const name = c.aliases().length ? `${c.name()}|${c.aliases().join('|')}` : c.name();
+      return `${name} ${c.usage().replace(/\[options\] ?/, '')}`.trim();
+    },
+    // Commander adds an implicit `help [command]` subcommand; `--help` is already
+    // under Options:, so the row is noise in a resource listing.
+    visibleCommands: (c) => c.commands.filter((sub) => sub.name() !== 'help' && !sub._hidden),
+  });
+  for (const child of cmd.commands) configureTreeHelp(child);
+  return cmd;
+}

@@ -3,7 +3,7 @@
  *
  * A profile is a named `{ api_url, api_key, api_secret }` set stored in
  * ~/.fob/fob-snap/config.yml. `add` takes flags, or prompts interactively for any
- * missing credential (secret via a hidden prompt) — the `login` flow.
+ * missing credential (secret via a hidden prompt).
  */
 
 import { Command } from 'commander';
@@ -58,7 +58,7 @@ function currentHandler(argv) {
 }
 
 function buildProfilesCommand() {
-  const profiles = new Command('profiles').alias('login').description('Manage credential profiles');
+  const profiles = new Command('profiles').description('Manage credential profiles');
 
   profiles
     .command('add')

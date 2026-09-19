@@ -62,7 +62,7 @@ async function deleteHandler(argv) {
 }
 
 export function buildWidgetsCommand() {
-  const widgets = new Command('widgets').alias('widget').description('Manage widgets');
+  const widgets = new Command('widgets').description('Manage widgets');
 
   listOptions(widgets.command('list').description("List the org's widgets")).action(safe(listHandler));
   jsonOption(widgets.command('show').description('Show one widget').argument('<id>', 'Widget id')).action(safe(showHandler));
@@ -77,7 +77,7 @@ export function buildWidgetsCommand() {
     .option('--json', 'Output raw JSON')
     .action(safe(createHandler));
 
-  widgets.command('delete').alias('rm').description('Delete a widget (snapshots cascade)').argument('<id>', 'Widget id').action(safe(deleteHandler));
+  widgets.command('delete').description('Delete a widget (snapshots cascade)').argument('<id>', 'Widget id').action(safe(deleteHandler));
 
   return widgets;
 }

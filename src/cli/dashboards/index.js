@@ -62,7 +62,7 @@ async function unshareHandler(argv) {
 }
 
 export function buildDashboardsCommand() {
-  const dashboards = new Command('dashboards').alias('dashboard').description('Manage dashboards, placements, and share links');
+  const dashboards = new Command('dashboards').description('Manage dashboards, placements, and share links');
 
   listOptions(dashboards.command('list').description("List the org's dashboards")).action(safe(listHandler));
   jsonOption(dashboards.command('show').description('Show a dashboard with its placements').argument('<id>', 'Dashboard id')).action(safe(showHandler));
@@ -74,7 +74,7 @@ export function buildDashboardsCommand() {
     .option('--json', 'Output raw JSON')
     .action(safe(createHandler));
 
-  dashboards.command('delete').alias('rm').description('Delete a dashboard').argument('<id>', 'Dashboard id').action(safe(deleteHandler));
+  dashboards.command('delete').description('Delete a dashboard').argument('<id>', 'Dashboard id').action(safe(deleteHandler));
 
   dashboards
     .command('add-widget')

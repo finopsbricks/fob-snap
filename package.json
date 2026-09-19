@@ -1,6 +1,6 @@
 {
   "name": "@finopsbricks/fob-snap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Snapshots app client + fob-snap CLI (2-in-1). Import the client in workers, or use the CLI to push snapshots and manage widgets/dashboards.",
   "type": "module",
   "main": "src/index.js",

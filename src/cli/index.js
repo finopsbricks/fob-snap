@@ -13,6 +13,7 @@ import { dirname, join } from 'node:path';
 import { Command } from 'commander';
 
 import { setProfileOverride } from './config-store.js';
+import { safe, configureTreeHelp } from './_helpers.js';
 import { gettingStartedHandler } from './getting-started.js';
 import { buildConfigCommand } from './config/index.js';
 import { buildSnapshotsCommand } from './snapshots/index.js';
@@ -30,9 +31,9 @@ export function run(argv) {
   program
     .name('fob-snap')
     .usage('<resource> <action> [target] [options]')
-    .description('Push snapshots and manage widgets/dashboards for Snapshots (snapshots.finopsbricks.com).')
     .version(packageVersion(), '-v, --version', 'Show version number')
-    .option('--profile <name>', 'Use credentials from a specific configured profile')
+    .option('--profile <name>', 'Use credentials from a specific configured profile (overrides current)')
+    // Runs before any action handler, at any depth.
     .hook('preAction', (thisCommand) => {
       const { profile } = thisCommand.opts();
       if (profile) setProfileOverride(profile);
@@ -41,7 +42,7 @@ export function run(argv) {
   program
     .command('getting-started')
     .description('Print setup instructions')
-    .action(gettingStartedHandler);
+    .action(safe(gettingStartedHandler));
 
   program
     .addCommand(buildConfigCommand())
@@ -50,6 +51,9 @@ export function run(argv) {
     .addCommand(buildDashboardsCommand())
     .allowUnknownOption(false)
     .showHelpAfterError();
+
+  // Applied tree-wide because configureHelp() is not inherited through addCommand().
+  configureTreeHelp(program);
 
   program.parse(argv, { from: 'user' });
 }
