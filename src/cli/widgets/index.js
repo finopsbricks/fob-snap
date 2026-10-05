@@ -8,7 +8,7 @@ import { Command } from 'commander';
 import { safe, listOptions, jsonOption, clientFor } from '../_helpers.js';
 import { printJson, printTable, trunc } from '../_output.js';
 
-const WIDGET_TYPES = ['line', 'bar', 'area', 'kpi', 'table', 'pie'];
+const WIDGET_TYPES = ['line', 'bar', 'area', 'kpi', 'table', 'pie', 'status', 'worklist'];
 
 function parseConfig(arg) {
   if (!arg) return undefined;
